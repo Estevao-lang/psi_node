@@ -1,15 +1,14 @@
 <?php
 
 // Parâmetros de conexão com o banco de dados
-$host = 'localhost';
-$port = 5432;
-$dbname = 'karina';
-$user = 'postgres';
-$password = 'L0b0tr1pl0@';
+$hostname = 'localhost';
+$database = 'karina';
+$username = 'root';
+$password = '';
 
 try {
-    // Conectando ao banco de dados PostgreSQL
-    $conn = new PDO("pgsql:host=$host;dbname=$dbname", $user, $password);
+    // Conectando ao banco de dados MySQL
+    $conn = new PDO("mysql:host=$hostname;dbname=$database", $username, $password);
     
     // Definindo o modo de erro para exceção
     $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);

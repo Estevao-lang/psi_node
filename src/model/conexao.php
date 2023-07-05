@@ -1,82 +1,50 @@
 <?php
-$hostname = 'dpg-chriif0rddlba9o5jl3g-a';
-$port = 5432;
-$database = 'psi_h416';
-$username = 'psi_h416_user';
-$password = '4vlVK6fbNgblEsA1jQ2yjADxrjGKEd2S';
+$hostname = 'localhost';
+$database = 'karina';
+$username = 'root';
+$password = '';
 
 try {
-    $dsn = "pgsql:host=$hostname;port=$port;dbname=$database";
-    $pdo = new PDO($dsn, $username, $password);
-    
-    // Configurações adicionais, se necessário
+    $pdo = new PDO("mysql:host=$hostname;dbname=$database", $username, $password);
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-    $pdo->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
     
-    echo "Conexão bem-sucedida!";
-    
-    // Realize operações no banco de dados aqui...
-    
-    // Feche a conexão
-    $pdo = null;
-} catch (PDOException $e) {
-    echo "Erro na conexão: " . $e->getMessage();
-}
-?>
-<?php
-$hostname = 'dpg-chriif0rddlba9o5jl3g-a';
-$port = 5432;
-$database = 'psi_h416';
-$username = 'psi_h416_user';
-$password = '4vlVK6fbNgblEsA1jQ2yjADxrjGKEd2S';
+    // Criação da tabela login
+    $pdo->exec("CREATE TABLE login (
+        id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+        nome VARCHAR(255) NULL,
+        email VARCHAR(255) NULL,
+        senha VARCHAR(255) NULL
+    )");
 
-try {
-    $dsn = "pgsql:host=$hostname;port=$port;dbname=$database";
-    $pdo = new PDO($dsn, $username, $password);
-    
-    // Configurações adicionais, se necessário
-    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-    $pdo->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
-    
-    echo "Conexão bem-sucedida!";
-    
-    // Criação das tabelas
-    $pdo->exec("
-        CREATE TABLE servicos (
-            id SERIAL PRIMARY KEY,
-            titulo VARCHAR,
-            conteudo VARCHAR,
-            img BYTEA
-        );
-        
-        CREATE TABLE ebook (
-            id SERIAL PRIMARY KEY,
-            titulo VARCHAR,
-            conteudo VARCHAR,
-            img BYTEA,
-            pdf BYTEA
-        );
-        
-        CREATE TABLE artigo (
-            id SERIAL PRIMARY KEY,
-            titulo VARCHAR,
-            conteudo VARCHAR,
-            link VARCHAR
-        );
-        
-        CREATE TABLE login (
-            id SERIAL PRIMARY KEY,
-            nome VARCHAR,
-            email VARCHAR,
-            senha VARCHAR
-        );
-    ");
-    
+    // Criação da tabela artigo
+    $pdo->exec("CREATE TABLE artigo (
+        id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+        titulo VARCHAR(255) NULL,
+        conteudo VARCHAR(255) NULL,
+        link VARCHAR(255) NULL
+    )");
+
+    // Criação da tabela servicos
+    $pdo->exec("CREATE TABLE servicos (
+        id INT UNSIGNED ZEROFILL AUTO_INCREMENT PRIMARY KEY,
+        titulo VARCHAR(255) NULL,
+        conteudo VARCHAR(255) NULL,
+        img LONGBLOB NULL
+    )");
+
+    // Criação da tabela ebook
+    $pdo->exec("CREATE TABLE ebook (
+        id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+        titulo VARCHAR(255) NULL,
+        conteudo VARCHAR(255) NULL,
+        img LONGBLOB NULL,
+        pdf LONGBLOB NULL
+    )");
+
     echo "Tabelas criadas com sucesso!";
     
-    // Feche a conexão
-    $pdo = null;
+    $pdo = null; // Fecha a conexão
 } catch (PDOException $e) {
-    echo "Erro na conexão: " . $e->getMessage();
+    echo "Erro na conexão ou criação das tabelas: " . $e->getMessage();
 }
 ?>
